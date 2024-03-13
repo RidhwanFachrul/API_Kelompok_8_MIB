@@ -86,6 +86,7 @@ paths:
     put:
       tags:
         - catatan
+      operationId: updateNote
       summary: edit catatan
       description: edit catatanmu melalui id
       requestBody:
@@ -110,6 +111,7 @@ paths:
           description: catatan tidak ditemukan
         '402':
           description: catatan tidak dapat diakses
+          
     delete:
       tags:
         - catatan

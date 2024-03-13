@@ -1,4 +1,5 @@
 <?php
+
 // Include file koneksi ke database
 require_once('api/db.php');
 
@@ -11,6 +12,7 @@ function sendResponse($statusCode, $data = null)
 }
 // Tangkap method HTTP
 $method = $_SERVER['REQUEST_METHOD'];
+
 
 
 switch ($method) {
