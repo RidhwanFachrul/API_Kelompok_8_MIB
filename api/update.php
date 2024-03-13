@@ -1,10 +1,15 @@
 <?php 
-require_once('db.php'); 
 
-parse_str(file_get_contents('php://input'), $value); 
 
-$id = $value['id']; 
-$note = $value['catatan']; 
+$input = file_get_contents('php://input');
+
+$data = json_decode($input, true);
+
+
+$id = $data['id'] ?? null;
+$note = $data['catatan'] ?? null;
+
+echo $id . ' ' . $note;
 $query = "UPDATE api_mib SET catatan='$note' WHERE id='$id'";
 
 $sql = mysqli_query($conn, $query); 

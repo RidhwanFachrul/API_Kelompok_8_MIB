@@ -1,0 +1,226 @@
+openapi: '3.0.2'
+info:
+  title: OpenAPI KELOMPOK 8
+  description: Tugas membuat open API.
+  termsOfService: https://example.com/terms/
+  contact:
+    name: API Support
+    url: https://github.com/vinsmith-MIB
+    email: kevincahyo.22051@mhs.unesa.ac.id
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+
+servers:
+- url: https://z4zc757j-{port}.asse.devtunnels.ms/{envoirment}
+  description: API server
+  variables:
+    envoirment:
+      description: 'gdfadfa'
+      enum:
+        - 'API_KELOMPOK_8_MIB'
+        - 'staging'
+        - 'production'
+      default: 'API_KELOMPOK_8_MIB'
+    port:
+      enum:
+        - '80'
+        - '3000'
+        - '8012'
+      default: '8012'
+
+paths:
+  /notes:
+    get:
+      tags:
+        - catatan
+      summary: 'lihat catatanmu'
+      description: Dapatkan semua catatan yang dapat diakses user
+      responses:
+        '200':
+          description: list Catatan
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/catatan'
+        default:
+          description: error payload
+          content:
+            'text/html':
+              schema:
+                $ref: '#/components/schemas/GeneralError'
+    post:
+      tags:
+        - catatan
+      summary: tambahkan catatan
+      description: tambahkan catatan yang dapat user akses
+      requestBody:
+        content:
+          'application/x-www-form-urlencoded':
+            schema:
+              type: object
+              properties:
+                  catatan:
+                    description: Create new note
+                    type: string
+              required:
+                - catatan
+      responses:
+        '200':
+          description: Note Created.
+          content:
+            'application/json': {}
+            'application/xml': {}
+        '405':
+          description: Method Not Allowed
+          content:
+            'application/json': {}
+            'application/xml': {}
+      security:
+      - petstore_auth:
+        - write:pets
+        - read:pets
+    put:
+      tags:
+        - catatan
+      summary: edit catatan
+      description: edit catatanmu melalui id
+      requestBody:
+        content:
+          'application/x-www-form-urlencoded':
+            schema:
+              type: object
+              properties:
+                  id:
+                    type: integer
+                  catatan:
+                    type: string
+              required:
+                - id
+                - catatan
+      responses:
+        '200':
+          description: catatan berhasil diedit
+        '400': 
+          description: id tidak valid
+        '401':
+          description: catatan tidak ditemukan
+        '402':
+          description: catatan tidak dapat diakses
+    delete:
+      tags:
+        - catatan
+      summary: hapus catatan
+      description: hapus catatan melalui id
+      parameters:
+      - name: hapus
+        in: query
+        schema:
+          type: boolean
+      - name: id_awal
+        in: query
+        description: id_awal
+        required: false
+        schema:
+          type: integer
+      - name: id_akhir
+        in: query
+        required: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          'application/x-www-form-urlencoded':
+            schema: 
+              type: object
+              properties:
+                id:
+                  type: integer
+            encoding:
+              historyMetadata:
+                contentType: application/xml; charset=utf-8
+      responses:
+        '200':
+          description: catatan berhasil dihapus
+        '400': 
+          description: id tidak valid
+        '401':
+          description: catatan tidak ditemukan
+        '402':
+          description: catatan tidak dapat diakses
+
+
+components:
+  schemas:
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    catatan:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        catatan:
+          type: string
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+  parameters:
+    skipParam:
+      name: skip
+      in: query
+      description: number of items to skip
+      required: true
+      schema:
+        type: integer
+        format: int32
+    limitParam:
+      name: limit
+      in: query
+      description: max records to return
+      required: true
+      schema:
+        type: integer
+        format: int32
+  responses:
+    NotFound:
+      description: Entity not found.
+    IllegalInput:
+      description: Illegal input for operation.
+    GeneralError:
+      description: General Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GeneralError'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://example.org/api/oauth/dialog
+          scopes:
+            write:catatan: modify pets in your account
+            read:catatan: read your pets
+
+
+
+  

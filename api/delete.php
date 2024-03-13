@@ -1,6 +1,6 @@
 <?php 
 
-require_once('db.php'); 
+
 if(isset($_GET['hapus'])){
     $id_awal = $_GET['id_awal'];
     $id_akhir = $_GET['id_akhir'];

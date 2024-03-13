@@ -1,5 +1,5 @@
 <?php
-require_once ('db.php');
+
 
 $catatan = $_POST['catatan'];
 

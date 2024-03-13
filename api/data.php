@@ -1,5 +1,5 @@
 <?php
-    require_once('db.php');
+
     
     $query = "SELECT * FROM api_mib ORDER BY id DESC";
     $sql = mysqli_query($conn, $query);
@@ -14,5 +14,6 @@
         }
     
         echo json_encode(array('result' => $result));
+        http_response_code(200);
     }
     
