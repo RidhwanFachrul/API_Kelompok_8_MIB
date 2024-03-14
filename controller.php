@@ -3,16 +3,14 @@
 // Include file koneksi ke database
 require_once('api/db.php');
 
-function sendResponse($statusCode, $data = null)
-{
-    http_response_code($statusCode);
-    header('Content-Type: application/json');
-    $response = array('statusCode' => $statusCode, 'data' => $data);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    // Atur header untuk OPTIONS
+    header("HTTP/1.1 200 OK");
+    exit(); // Keluar dari skrip setelah menanggapi OPTIONS
 }
+
 // Tangkap method HTTP
 $method = $_SERVER['REQUEST_METHOD'];
-
 
 
 switch ($method) {
