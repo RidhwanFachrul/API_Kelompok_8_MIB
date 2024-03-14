@@ -2,4 +2,4 @@
  
 # TAMPILAN OPEN API
 
-![1](tampilan/1.jpg)
+![1](tampilan/1.png)
