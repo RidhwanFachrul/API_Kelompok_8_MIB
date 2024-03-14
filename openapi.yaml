@@ -31,6 +31,7 @@ servers:
       default: '8012'
 
 paths:
+  
   /notes:
     get:
       tags:
@@ -45,13 +46,29 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/catatan'
-        default:
-          description: error payload
-          content:
-            'text/html':
-              schema:
-                $ref: '#/components/schemas/GeneralError'
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                      description: ID dari catatan
+                    catatan:
+                      type: string
+                      description: Isi dari catatan
+              example:
+                - id: 1
+                  catatan: "Membeli bahan makanan untuk masak malam ini"
+                - id: 2
+                  catatan: "Meeting dengan tim pengembangan pukul 10 pagi"
+                - id: 3
+                  catatan: "Menyelesaikan laporan keuangan bulan ini"
+
+        '400': 
+          description: id tidak valid
+        '401':
+          description: catatan tidak ditemukan
+        '402':
+          description: catatan tidak dapat diakses  
     post:
       tags:
         - catatan
@@ -63,22 +80,26 @@ paths:
             schema:
               type: object
               properties:
-                  catatan:
-                    description: Create new note
-                    type: string
+                catatan:
+                  description: Create new note
+                  type: string
               required:
                 - catatan
       responses:
         '200':
-          description: Note Created.
+          description: Catatan telah diperbarui
           content:
-            'application/json': {}
-            'application/xml': {}
-        '405':
-          description: Method Not Allowed
-          content:
-            'application/json': {}
-            'application/xml': {}
+            application/json:
+              example:
+                id: 1
+                catatan: Catatan baru telah dibuat
+            application/xml: {}
+        '400': 
+          description: id tidak valid
+        '401':
+          description: catatan tidak ditemukan
+        '402':
+          description: catatan tidak dapat diakses
 
     put:
       tags:
@@ -153,12 +174,39 @@ paths:
       responses:
         '200':
           description: catatan berhasil dihapus
+          content:
+            application/json:
+              examples:
+                success:
+                  value:
+                    message: Catatan berhasil dihapus
+                    deleted_note:
+                      id: 1
+                      catatan: "Contoh catatan yang telah dihapus"
         '400': 
           description: id tidak valid
+          content:
+            application/json:
+              examples:
+                invalid_id:
+                  value:
+                    message: ID tidak valid
         '401':
           description: catatan tidak ditemukan
+          content:
+            application/json:
+              examples:
+                not_found:
+                  value:
+                    message: Catatan tidak ditemukan
         '402':
           description: catatan tidak dapat diakses
+          content:
+            application/json:
+              examples:
+                access_denied:
+                  value:
+                    message: Catatan tidak dapat diakses
 
 
 components:
